@@ -23,7 +23,6 @@ body {
     box-sizing: border-box;
   }
   
-  /* This is our style for the invalid fields */
   input:invalid{
     border-color: #900;
     background-color: #FDD;
@@ -32,8 +31,7 @@ body {
   input:focus:invalid {
     outline: none;
   }
-  
-  /* This is the style of our error messages */
+
   .error {
     width  : 100%;
     padding: 0;

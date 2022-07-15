@@ -1,11 +1,15 @@
 const form = document.getElementsByTagName("form")[0];
 
-const email = document.getElementById("mail");
-// const emailError = document.querySelector('#mail + span.error');
+const email = document.getElementById("email");
+const emailError = document.querySelector("#email + span.error");
 const country = document.getElementById("country");
+const countryError = document.querySelector("#country + span.error");
 const zipcode = document.getElementById("zipcode");
+const zipcodeError = document.querySelector("#zipcode + span.error");
 const password = document.getElementById("password");
+const passwordError = document.querySelector("#password + span.error");
 const pwConfirm = document.getElementById("pwConfirm");
+const pwConfirmError = document.querySelector("#pwConfirm + span.error");
 
 email.addEventListener("input", function (event) {
   if (email.validity.valid) {
@@ -40,6 +44,9 @@ function showCountryError() {
   } else if (country.validity.typeMismatch) {
     countryError.textContent =
       "Entered value needs to be a country (real or invented).";
+  } else if (country.validity.patternMismatch) {
+    countryError.textContent =
+      "Entered value needs to be a country (real or invented).";
   }
   countryError.className = "error active";
 }
@@ -55,11 +62,13 @@ zipcode.addEventListener("input", function (event) {
 
 function showZipCodeError() {
   if (zipcode.validity.valueMissing) {
-    zipCodeError.textContent = "You need to enter a zip code.";
-  } else if (zipcode.validity.typeMismatch) {
-    zipCodeError.textContent = "Entered value needs to be a number.";
+    zipcodeError.textContent = "You need to enter a zip code.";
+  } else if (zipcode.validity.patternMismatch) {
+    zipcodeError.textContent = "Entered value needs to be a number.";
+  } else if (zipcode.validity.tooShort) {
+    zipcodeError.textContent = "Zipcode needs to be 5 numbers.";
   }
-  zipCodeError.className = "error active";
+  zipcodeError.className = "error active";
 }
 
 password.addEventListener("input", function (event) {
@@ -74,55 +83,50 @@ password.addEventListener("input", function (event) {
 function showPasswordError() {
   if (password.validity.valueMissing) {
     passwordError.textContent = "You need to enter a password.";
-  } else if (password.validity.typeMismatch) {
-    passwordError.textContent = "Entered value needs to be a password.";
+  } else if (password.validity.tooShort) {
+    passwordError.textContent = "Password needs include at least 6 characters.";
   }
   passwordError.className = "error active";
 }
 
 pwConfirm.addEventListener("input", function (event) {
-  if (pwConfirm.validity.valid) {
-    pwConfirm.textContent = "";
-    pwConfirm.className = "error";
+  pwConfirm.setCustomValidity("");
+  if (password.value !== pwConfirm.value) {
+    pwConfirm.setCustomValidity("Passwords don't match.");
+    showpwConfirmError();
+  } else if (pwConfirm.validity.valid) {
+    pwConfirmError.textContent = "";
+    pwConfirmError.className = "error";
   } else {
     showpwConfirmError();
   }
 });
 
-// .setCustomValidity("Passwords Don't Match")
-
 function showpwConfirmError() {
-  if (password.validity.valueMissing) {
-    passwordError.textContent = "You need to enter a password.";
-  } else if (password.validity.typeMismatch) {
-    passwordError.textContent = "Entered value needs to be a password.";
+  if (pwConfirm.validity.valueMissing) {
+    pwConfirmError.textContent = "You need to enter a password.";
+  } else if (pwConfirm.validity.tooShort) {
+    pwConfirmError.textContent =
+      "Password needs include at least 6 characters.";
+  } else if (pwConfirm.validity.customError) {
+    pwConfirmError.textContent = "Passwords don't match.";
   }
-  passwordError.className = "error active";
+  pwConfirmError.className = "error active";
 }
 
-form.addEventListener("submit", function (event) {
-  //check if all are valid
-  if (!email.validity.valid) {
-    showError();
-    event.preventDefault();
+form.addEventListener("submit", validateForm);
+function validateForm(e) {
+  const form = e.target,
+    field = Array.from(form.elements);
+  field.forEach((i) => {
+    if (i.checkValidity()) {
+      i.parentElement.classList.remove("invalid");
+    } else {
+      i.parentElement.classList.add("invalid");
+    }
+  });
+  if (!form.checkValidity()) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
   }
-});
-
-function showError() {
-  if (email.validity.valueMissing) {
-    // If the field is empty,
-    // display the following error message.
-    emailError.textContent = "You need to enter an e-mail address.";
-  } else if (email.validity.typeMismatch) {
-    // If the field doesn't contain an email address,
-    // display the following error message.
-    emailError.textContent = "Entered value needs to be an e-mail address.";
-  } else if (email.validity.tooShort) {
-    // If the data is too short,
-    // display the following error message.
-    emailError.textContent = `Email should be at least ${email.minLength} characters; you entered ${email.value.length}.`;
-  }
-
-  // Set the styling appropriately
-  emailError.className = "error active";
 }

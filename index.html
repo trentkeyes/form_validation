@@ -14,27 +14,32 @@
         <fieldset>
             <legend>Please fill out the following form:</legend>
             <div class="form-container">
-                  <div class="input-label">
+                <div class="input-label">
                     <label for="email">Email</label>
-                    <input type="email" name="signUp" id="email">
+                    <input type="email" id="email" required>
+                    <span class="error" aria-live="polite"></span>
                 </div>
                 <div class="input-label">
                     <label for="country">Country</label>
-                    <input type="text" name="signUp" id="country">
+                    <input type="text" id="country" required pattern="^[a-zA-Z\s]*$">
+                    <span class="error" aria-live="polite"></span>
                 </div>
                 <div class="input-label">
                     <label for="zipcode">Zip Code</label>
-                    <input type="tel" name="signUp" id="zipcode">
+                    <input type="tel" id="zipcode" minlength="5" maxlength="5" required pattern="[0-9]+">
+                    <span class="error" aria-live="polite"></span>
                 </div>
                 <div class="input-label">
                     <label for="password">Password</label>
-                    <input type="password" name="signUp" id="password" minlength="6">
-                    <span></span>
+                    <input type="password" id="password" minlength="6" required>
+                    <span class="error" aria-live="polite"></span>
                 </div>
                 <div class="input-label">
                     <label for="pwConfirm">Confirm Password</label>
-                    <input type="password" name="signUp" id="pwConfirm" minlength="6">
+                    <input type="password" id="pwConfirm" minlength="6" required>
+                    <span class="error" aria-live="polite"></span>
                 </div>
+                <button>Submit</button>
             </div>
         </fieldset>
     </form>
