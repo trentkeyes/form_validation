@@ -10,7 +10,34 @@
 </head>
 
 <body>
-    
+    <form novalidate>
+        <fieldset>
+            <legend>Please fill out the following form:</legend>
+            <div class="form-container">
+                  <div class="input-label">
+                    <label for="email">Email</label>
+                    <input type="email" name="signUp" id="email">
+                </div>
+                <div class="input-label">
+                    <label for="country">Country</label>
+                    <input type="text" name="signUp" id="country">
+                </div>
+                <div class="input-label">
+                    <label for="zipcode">Zip Code</label>
+                    <input type="tel" name="signUp" id="zipcode">
+                </div>
+                <div class="input-label">
+                    <label for="password">Password</label>
+                    <input type="password" name="signUp" id="password" minlength="6">
+                    <span></span>
+                </div>
+                <div class="input-label">
+                    <label for="pwConfirm">Confirm Password</label>
+                    <input type="password" name="signUp" id="pwConfirm" minlength="6">
+                </div>
+            </div>
+        </fieldset>
+    </form>
 
 
     <script src="script.js"></script>
